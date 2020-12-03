@@ -42,14 +42,20 @@ def type_display(pokemon, pokemon_str):
     return pokemon_str
 
 def visualize_solution(solution, z, w):
-    my_pokemon = solution['x']
+    my_pokemon = {}
+    for i in range(18):
+        my_pokemon[i] = solution.array('x', i)
     my_pokemon_str = 'じぶんのポケモン:'
     my_pokemon_str = type_display(my_pokemon, my_pokemon_str)
     enemy_pokemon = z
     enemy_pokemon = {i: j for i, j in enumerate(z)}
     enemy_pokemon_str = 'あいてのポケモン:'
     enemy_pokemon_str = type_display(enemy_pokemon, enemy_pokemon_str)
-    my_skills = solution['y']
+    my_skills = {}
+    for i in range(4):
+        my_skills[i] = {}
+        for j in range(18):
+            my_skills[i][j] = solution.array('y', (i, j))
     my_skill_str = [0] * 4
     for i, j in my_skills.items():
         my_skill_str[i] = 'わざ' + str(i) + ':'

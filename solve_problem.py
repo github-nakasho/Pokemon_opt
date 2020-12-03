@@ -14,6 +14,6 @@ def solve_problem(model, h_a, h_b):
     response = sampler.sample_qubo(Q=qubo)
     # take mininum state
     dict_solution = response.first.sample
-    # decode for analysis
-    solution, broken, energy = model.decode_solution(dict_solution, vartype='BINARY', feed_dict=feed_dict)
+    solution = model.decode_sample(dict_solution, vartype='BINARY', feed_dict=feed_dict)    
+    broken = solution.constraints(only_broken=True)
     return solution, broken
