@@ -20,8 +20,10 @@ def make_energy(type_matrix, enemy, skill):
     z = np.array(enemy)
     w = np.array(skill)
     # set cost function
-    atk_damage = sum([np.dot(y[i], np.dot(type_matrix, z)) for i in range(num_skills)])
-    def_damage = sum([np.dot(w[i], np.dot(type_matrix, x)) for i in range(num_skills)])
+    atk_damage = sum([np.dot(0.5*x+y[i], np.dot(type_matrix, z)) for i in range(num_skills)])
+    def_damage = sum([np.dot(0.5*z+w[i], np.dot(type_matrix, x)) for i in range(num_skills)])
+    # atk_damage = sum([np.dot(y[i], np.dot(type_matrix, z)) for i in range(num_skills)])
+    # def_damage = sum([np.dot(w[i], np.dot(type_matrix, x)) for i in range(num_skills)])
     # set one-hot encoding constraint
     h_a = Constraint((sum(x)-1)*(sum(x)-2), label='h_a')
     y_const = [0] * num_skills
