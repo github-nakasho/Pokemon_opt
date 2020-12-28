@@ -12,7 +12,7 @@ if __name__ == '__main__':
     # set costs & constraints
     model = me.make_energy(type_matrix=type_matrix, enemy=enemy, skill=skill)
     # set hyper parameters
-    parameters = {'h_a': 2.0, 'h_b': 5.0}
+    parameters = {'h_a': 2*len(enemy)+1, 'h_b': 4*len(enemy)+1}
     # solve with OpenJij
     solution, broken = sop.solve_problem(model=model, **parameters)
     # check broken 

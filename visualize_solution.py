@@ -42,36 +42,38 @@ def type_display(pokemon, pokemon_str):
     return pokemon_str
 
 def visualize_solution(solution, z, w):
-    my_pokemon = {}
-    for i in range(18):
-        my_pokemon[i] = solution.array('x', i)
-    my_pokemon_str = 'じぶんのポケモン:'
-    my_pokemon_str = type_display(my_pokemon, my_pokemon_str)
-    enemy_pokemon = z
-    enemy_pokemon = {i: j for i, j in enumerate(z)}
-    enemy_pokemon_str = 'あいてのポケモン:'
-    enemy_pokemon_str = type_display(enemy_pokemon, enemy_pokemon_str)
-    my_skills = {}
-    for i in range(4):
-        my_skills[i] = {}
+    print('##########')
+    print('じぶんのポケモン')
+    for i in range(len(z)):
+        print('*****')
+        my_pokemon = {}
         for j in range(18):
-            my_skills[i][j] = solution.array('y', (i, j))
-    my_skill_str = [0] * 4
-    for i, j in my_skills.items():
-        my_skill_str[i] = 'わざ' + str(i) + ':'
-        my_skill_str[i] = type_display(j, my_skill_str[i])
-    enemy_skills = w
-    enemy_skill_str = [0] * 4
-    for i, j in enumerate(enemy_skills):
-        enemy_skill_str[i] = 'わざ' + str(i) + ':'
-        j = {k: l for k, l in enumerate(j)}
-        enemy_skill_str[i] = type_display(j, enemy_skill_str[i])
-    print('**********')
-    print(my_pokemon_str)
-    for i in range(4):
-        print(my_skill_str[i])
-    print('**********')
-    print(enemy_pokemon_str)
-    for i in range(4):
-        print(enemy_skill_str[i])
+            my_pokemon[j] = solution.array('x', (i, j))
+        my_pokemon_type = ''
+        my_pokemon_type = type_display(my_pokemon, my_pokemon_type)
+        print(my_pokemon_type)
+        my_skills = {}
+        for j in range(4):
+            my_skills[j] = {}
+            for k in range(18):
+                my_skills[j][k] = solution.array('y', (i, j, k))
+        my_skill_str = ''
+        for j, k in my_skills.items():
+            my_skill_str = 'わざ' + str(j) + ':'
+            my_skill_str = type_display(k, my_skill_str)
+            print(my_skill_str)
+    print('##########')
+    print('あいてのポケモン')
+    for i in range(len(z)):
+        print('*****')
+        enemy_pokemon = {j: k for j, k in enumerate(z[i])}
+        enemy_pokemon_type = ''
+        enemy_pokemon_type = type_display(enemy_pokemon, enemy_pokemon_type)
+        print(enemy_pokemon_type)
+        enemy_skills = w[i]
+        for j, k in enumerate(enemy_skills):
+            enemy_skill_str = 'わざ' + str(j) + ':'
+            k = {l: m for l, m in enumerate(k)}
+            enemy_skill_str = type_display(k, enemy_skill_str)
+            print(enemy_skill_str)
     
