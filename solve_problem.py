@@ -3,9 +3,9 @@
 import openjij as oj
 
 
-def solve_problem(model, h_a, h_b):
+def solve_problem(model, h_a, h_b, h_c):
     # set dictionary of hyper parameters
-    feed_dict = {'h_a': h_a, 'h_b': h_b, }
+    feed_dict = {'h_a': h_a, 'h_b': h_b, 'h_c': h_c}
     # convert to qubo
     qubo, offset = model.to_qubo(feed_dict=feed_dict)
     # solve with OpenJij (SA)

@@ -8,11 +8,11 @@ import visualize_solution as vs
 
 if __name__ == '__main__':
     # set problem
-    type_matrix, enemy, skill = mi.make_instance()
+    type_matrix, weak_matrix, enemy, skill = mi.make_instance()
     # set costs & constraints
-    model = me.make_energy(type_matrix=type_matrix, enemy=enemy, skill=skill)
+    model = me.make_energy(type_matrix=type_matrix, weak_matrix=weak_matrix, enemy=enemy, skill=skill)
     # set hyper parameters
-    parameters = {'h_a': 2*len(enemy)+1, 'h_b': 4*len(enemy)+1}
+    parameters = {'h_a': 2*len(enemy)+1, 'h_b': 4*len(enemy)+1, 'h_c': 4*len(enemy)+1}
     # solve with OpenJij
     solution, broken = sop.solve_problem(model=model, **parameters)
     # check broken 

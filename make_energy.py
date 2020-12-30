@@ -3,7 +3,7 @@
 import numpy as np
 from pyqubo import Array, Constraint, Placeholder
 
-def make_energy(type_matrix, enemy, skill):
+def make_energy(type_matrix, weak_matrix, enemy, skill):
     # set the number of enemies
     num_enemies = len(enemy)
     # set the number of my pokemon
@@ -15,12 +15,15 @@ def make_energy(type_matrix, enemy, skill):
     # set placeholder
     lambda_a = Placeholder('h_a')
     lambda_b = Placeholder('h_b')
+    lambda_c = Placeholder('h_c')
     # set binary variables
     x = Array.create('x', shape=(num_my_team, num_types), vartype='BINARY')
     y = Array.create('y', shape=(num_my_team, num_skills, num_types), vartype='BINARY')
+    s = Array.create('s', shape=(num_enemies-1), vartype='BINARY')
     # convert to numpy array
     x = np.array(x)
     y = np.array(y)
+    s = np.array(s)
     z = np.array(enemy)
     w = np.array(skill)
     # set one-hot encoding constraint for pokemon type
@@ -36,6 +39,10 @@ def make_energy(type_matrix, enemy, skill):
             tmp = sum([y[i][k][l] for l in range(num_types)])
             h_b += (tmp-1) ** 2
     h_b = Constraint(h_b, label='h_b')
+    # set a constraint that at one pokemon is weak to any given enemies
+    tmp = sum([np.dot(z[k], np.dot(weak_matrix, x[0])) for k in range(num_enemies)])
+    h_c = (num_enemies-sum(s)-tmp) ** 2
+    h_c = Constraint(h_c, label='h_c')
     # set cost function
     atk_damage = 0
     for i in range(num_my_team):
@@ -51,7 +58,7 @@ def make_energy(type_matrix, enemy, skill):
                 def_damage += tmp
     obj = - atk_damage + def_damage
     # compute total energy
-    energy = obj + lambda_a * h_a + lambda_b * h_b
+    energy = obj + lambda_a * h_a + lambda_b * h_b + lambda_c * h_c
     # compile
     model = energy.compile()
     return model
