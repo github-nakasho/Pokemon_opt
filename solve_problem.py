@@ -3,13 +3,13 @@
 import openjij as oj
 
 
-def solve_problem(model, h_a, h_b, h_c):
+def solve_problem(model, h_a, h_b, h_c, h_d):
     # set dictionary of hyper parameters
-    feed_dict = {'h_a': h_a, 'h_b': h_b, 'h_c': h_c}
+    feed_dict = {'h_a': h_a, 'h_b': h_b, 'h_c': h_c, 'h_d': h_d}
     # convert to qubo
     qubo, offset = model.to_qubo(feed_dict=feed_dict)
     # solve with OpenJij (SA)
-    num_reads = 500
+    num_reads = 100
     sampler = oj.SASampler(num_reads=num_reads)
     response = sampler.sample_qubo(Q=qubo)
     # take mininum state
